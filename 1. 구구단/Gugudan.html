@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <title>구구단</title>
+</head>
+
+<body>
+    <div id="root">
+        <div>{{a}} 곱하기 {{b}}는?</div>
+        <form v-on:submit="getResult">
+            <input type="number" v-model="answer" ref="answer">
+            <button type="submit">입력!</button>
+        </form>
+        <div>{{result}}</div>
+        <div>정답: {{correct}} 오답: {{wrong}} 정답률: {{winrate}}%</div>
+    </div>
+
+
+</body>
+<script>
+    const app = new Vue({
+        el: '#root',
+        data: {
+            a: Math.ceil(Math.random() * 9),
+            b: Math.ceil(Math.random() * 9),
+            answer: "",
+            result: "",
+            correct: 0,
+            wrong: 0,
+            winrate: 0
+        },
+        methods: {
+            getResult(e) {
+                e.preventDefault();
+                if (this.answer != "") {
+                    if (this.a * this.b == this.answer) {
+                        this.result = "정답"
+                        this.a = Math.ceil(Math.random() * 9);
+                        this.b = Math.ceil(Math.random() * 9);
+                        this.answer = "";
+                        this.$refs.answer.focus();
+                        this.correct++;
+                        this.winrate = (this.correct / (this.correct + this.wrong) * 100).toFixed(2);
+                    } else {
+                        this.result = "오답"
+                        this.answer = "";
+                        this.wrong++;
+                        this.winrate = (this.correct / (this.correct + this.wrong) * 100).toFixed(2);
+                    }
+                }
+            }
+        }
+    });
+</script>
+
+</html>
